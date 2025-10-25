@@ -1,7 +1,7 @@
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
-  scrape_timeout: 30s    # 🔥 default 10s hota hai, isko 30s kar de
+  scrape_interval: 30s       # har 30s me scrape
+  evaluation_interval: 30s
+  scrape_timeout: 15s        # request timeout 15s rakha
 
 scrape_configs:
   - job_name: "sentinelops"
