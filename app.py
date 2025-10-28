@@ -1,18 +1,20 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-import random
+import psutil
 import os
+import time
 
 app = Flask(__name__)
 CORS(app)
 
-# ----------- METRICS JSON (Firebase ke liye) -----------
+# ----------- REAL METRICS (LIVE DATA) -----------
 @app.route('/metrics')
 def metrics():
-    cpu = random.randint(10, 95)
-    memory = random.randint(10, 90)
-    requests = random.randint(100, 500)
-    errors = random.randint(0, 10)
+    cpu = psutil.cpu_percent(interval=1)
+    memory = psutil.virtual_memory().percent
+    requests = int(time.time()) % 500  # demo request counter for now
+    errors = int(time.time()) % 10     # demo error count for now
+    
     return jsonify({
         "cpu": cpu,
         "memory": memory,
@@ -23,7 +25,7 @@ def metrics():
 # ----------- THREAT DETECTION -----------
 @app.route('/threat')
 def threat():
-    status = "SAFE ✅" if random.random() < 0.8 else "⚠️ THREAT DETECTED"
+    status = "SAFE ✅" if psutil.cpu_percent(interval=0.5) < 80 else "⚠️ HIGH CPU LOAD DETECTED"
     return jsonify({"status": status})
 
 # ----------- REPORTS -----------
