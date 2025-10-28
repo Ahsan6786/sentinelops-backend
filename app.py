@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, Response
+from flask import Flask, jsonify
 from flask_cors import CORS
 import random
 import os
@@ -7,23 +7,19 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# ----------- METRICS API -----------
+# ----------- METRICS API (JSON Format for Firebase) -----------
 @app.route('/metrics')
 def metrics():
-    # Generate random metrics
     cpu = random.randint(10, 95)
     memory = random.randint(10, 90)
     requests = random.randint(100, 500)
     errors = random.randint(0, 10)
-
-    # Return in Prometheus text format
-    metrics_text = (
-        f'cpu_usage {cpu}\n'
-        f'memory_usage {memory}\n'
-        f'requests_total {requests}\n'
-        f'errors_total {errors}\n'
-    )
-    return Response(metrics_text, mimetype="text/plain")
+    return jsonify({
+        "cpu": cpu,
+        "memory": memory,
+        "requests": requests,
+        "errors": errors
+    })
 
 # ----------- THREAT DETECTION API -----------
 @app.route('/threat')
@@ -38,6 +34,6 @@ def reports():
 
 # ----------- MAIN SERVER RUN -----------
 if __name__ == '__main__':
-    # Automatically detect Render environment port, fallback to 5050 locally
+    # Render (Cloud) port auto-detect, local default = 5050
     port = int(os.environ.get("PORT", 5050))
     app.run(host='0.0.0.0', port=port)
