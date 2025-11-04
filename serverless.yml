@@ -1,5 +1,6 @@
 service: sentinelops-backend
-frameworkVersion: '3'
+
+frameworkVersion: '4'
 
 provider:
   name: aws
@@ -32,3 +33,4 @@ package:
     - .gitignore
     - .git/**
     - __pycache__/**
+    - data/**
