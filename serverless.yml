@@ -1,21 +1,18 @@
 service: sentinelops-lambda
+frameworkVersion: '4'
 
 provider:
   name: aws
   runtime: python3.11
   region: us-east-1
   stage: dev
+  timeout: 30
 
 functions:
   app:
     handler: wsgi_handler.handler
     events:
-      - http:
-          path: /
-          method: ANY
-      - http:
-          path: '{proxy+}'
-          method: ANY
+      - httpApi: '*'
 
 plugins:
   - serverless-wsgi
@@ -26,4 +23,4 @@ custom:
     app: app.app
     packRequirements: false
   pythonRequirements:
-    dockerizePip: true
+    dockerizePip: non-linux
