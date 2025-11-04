@@ -1,5 +1,4 @@
 service: sentinelops-backend
-
 frameworkVersion: '4'
 
 provider:
@@ -7,10 +6,6 @@ provider:
   runtime: python3.11
   region: us-east-1
   stage: dev
-  memorySize: 512
-  timeout: 10
-  environment:
-    PORT: 5050
 
 plugins:
   - serverless-wsgi
@@ -26,11 +21,3 @@ functions:
     handler: wsgi_handler.handler
     events:
       - httpApi: '*'
-
-package:
-  exclude:
-    - node_modules/**
-    - .gitignore
-    - .git/**
-    - __pycache__/**
-    - data/**
